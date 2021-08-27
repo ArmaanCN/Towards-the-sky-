@@ -1,0 +1,56 @@
+import discord
+
+class MyClient(discord.Client):
+
+    async def on_ready(self):
+        print('Logged on as', self.user)
+
+    async def on_message(self, message):
+        word_list = ['cheat', 'cheats', 'hack', 'hacks', 'internal', 'external', 'ddos', 'denial of service']
+
+        # don't respond to ourselves
+        if message.author == self.user:
+            return
+
+        messageContent = message.content
+        if len(messageContent) > 0:
+            for word in word_list:
+                if word in messageContent:
+                    await message.delete()
+                    await message.channel.send('Do not say that!')
+            
+        messageattachments = message.attachments
+        if len(messageattachments) > 0:
+            for attachment in messageattachments:
+                if attachment.filename.endswith(".dll"):
+                    await message.delete()
+                    await message.channel.send("No DLL's allowed!")
+                elif attachment.filename.endswith('.exe'):
+                    await message.delete()
+                    await message.channel.send("No EXE's allowed!")
+                else:
+                    break
+
+client = MyClient()
+client.run('token here')
+#Anything commented out is optional
+
+import discord
+from discord.ext import commands
+
+bot = commands.Bot(command_prefix='prefix here')
+
+@bot.event
+async def on_ready():
+#   await bot.change_presence(activity=discord.Game(name="Rich Presence Here"))
+    print('Logged in as: ' + bot.user.name)
+    print('Ready!\n')
+    
+@bot.command()
+async def commandname(ctx, *, somevariable)
+#If you don't need a variable, then you only need (ctx)
+#	"""Command description"""
+	Code goes here
+	await ctx.send('Message')
+
+bot.run('yourtoken')
